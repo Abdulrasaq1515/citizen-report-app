@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <!-- Cordova requires this Content-Security-Policy for local file + remote API access -->
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: https://ssl.gstatic.com; style-src * 'self' 'unsafe-inline'; media-src *; img-src * data: content:;">
+  <title>CitizenReport</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== TOP BAR ===== -->
+  <header class="topbar">
+    <h1>CitizenReport</h1>
+    <div id="userStatus" class="user-status">Not logged in</div>
+  </header>
+
+  <!-- ===== LOGIN SCREEN ===== -->
+  <section id="loginScreen" class="screen active">
+    <h2>Login</h2>
+    <p class="hint">Login lets you see which incidents you personally submitted. You can still browse and submit as a guest.</p>
+    <input type="text" id="loginUsername" placeholder="WordPress Username">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <button id="loginBtn" class="btn">Login</button>
+    <button id="skipLoginBtn" class="btn btn-secondary">Continue as Guest</button>
+    <p id="loginMessage" class="message"></p>
+  </section>
+
+  <!-- ===== ADD INCIDENT SCREEN ===== -->
+  <section id="addScreen" class="screen">
+    <h2>Report an Incident</h2>
+
+    <label>Title</label>
+    <input type="text" id="incidentTitle" placeholder="e.g. Accident on Ikorodu Road">
+
+    <label>Category</label>
+    <select id="incidentCategory">
+      <option value="">Loading categories...</option>
+    </select>
+
+    <label>Description</label>
+    <textarea id="incidentDescription" rows="4" placeholder="Describe what happened"></textarea>
+
+    <label>Location</label>
+    <div class="row">
+      <button id="getLocationBtn" class="btn btn-secondary">Get Current Location</button>
+      <span id="locationDisplay" class="location-display">No location captured</span>
+    </div>
+
+    <label>Photo</label>
+    <div class="row">
+      <button id="takePhotoBtn" class="btn btn-secondary">Take Photo</button>
+      <img id="photoPreview" class="photo-preview" style="display:none;">
+    </div>
+
+    <button id="submitIncidentBtn" class="btn">Submit Incident</button>
+    <p id="addMessage" class="message"></p>
+  </section>
+
+  <!-- ===== BROWSE INCIDENTS SCREEN ===== -->
+  <section id="browseScreen" class="screen">
+    <h2>Browse Incidents</h2>
+
+    <div class="row">
+      <select id="filterCategory">
+        <option value="">All Categories</option>
+      </select>
+      <label class="checkbox-label">
+        <input type="checkbox" id="myIncidentsOnly"> My incidents only
+      </label>
+    </div>
+
+    <button id="refreshBtn" class="btn btn-secondary">Refresh</button>
+
+    <div id="incidentList" class="incident-list">
+      <p class="hint">Loading incidents...</p>
+    </div>
+  </section>
+
+  <!-- ===== BOTTOM NAVIGATION ===== -->
+  <nav class="bottom-nav">
+    <button class="nav-btn" data-screen="loginScreen">Login</button>
+    <button class="nav-btn" data-screen="addScreen">Report</button>
+    <button class="nav-btn" data-screen="browseScreen">Browse</button>
+  </nav>
+
+  <!-- Cordova bridge (only exists on device/emulator, not in a regular browser) -->
+  <script src="cordova.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

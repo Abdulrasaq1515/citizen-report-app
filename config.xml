@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="net.bincom.citizenreport" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>CitizenReport</name>
+    <description>
+        A Citizens Reporting Solution App. Users can submit incidents (Accident, Fighting, Rioting, etc.)
+        with photo and location, and browse incidents submitted by other users, backed by a WordPress REST API server.
+    </description>
+    <author email="bincomdevcenter@bincom.net" href="https://www.bincom.net/academy">Bincom Trainee</author>
+
+    <content src="index.html" />
+
+    <!-- Allow the app to talk to your WordPress server and any HTTPS API -->
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-navigation href="*" />
+
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="android-minSdkVersion" value="22" />
+    <preference name="Orientation" value="portrait" />
+
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+
+    <!-- ===== PLUGINS ===== -->
+    <!-- Camera: capture incident photos -->
+    <plugin name="cordova-plugin-camera" spec="^7.0.0" />
+    <!-- Geolocation: capture latitude/longitude of the incident -->
+    <plugin name="cordova-plugin-geolocation" spec="^5.0.0" />
+    <!-- Local notifications: alert the user when a new incident is submitted -->
+    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.3" />
+    <!-- Network status: check connectivity before hitting the API -->
+    <plugin name="cordova-plugin-network-information" spec="^3.0.0" />
+    <!-- Device info -->
+    <plugin name="cordova-plugin-device" spec="^2.1.0" />
+    <!-- Whitelist plugin (needed on older Cordova/Android for the access/allow-navigation tags above) -->
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.5" />
+    <!-- Splashscreen -->
+    <plugin name="cordova-plugin-splashscreen" spec="^6.0.0" />
+</widget>
