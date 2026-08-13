@@ -62,17 +62,23 @@ jobs:
           set -e
           echo "Patching plugin Gradle files: replacing 'compile' with 'implementation'"
           find platforms/android -type f -name "*.gradle" -print0 | xargs -0 sed -i 's/\bcompile\b/implementation/g' || true
-
-          APP_BUILD_GRADLE=platforms/android/app/build.gradle
-          if [ -f "$APP_BUILD_GRADLE" ]; then
-            if ! grep -q "compileSdkVersion" "$APP_BUILD_GRADLE"; then
-              echo "Inserting compileSdkVersion 33 into $APP_BUILD_GRADLE"
-              perl -0777 -pe "s/android\s*\{/android {\n        compileSdkVersion 33\n/" -i "$APP_BUILD_GRADLE"
-            else
-              echo "compileSdkVersion already present"
-            fi
+          # If a committed build-extras exists, copy it into the Android app
+          if [ -f "$GITHUB_WORKSPACE/tools/build-extras.gradle" ]; then
+            echo "Copying committed tools/build-extras.gradle into platforms/android/app/build-extras.gradle"
+            mkdir -p platforms/android/app
+            cp "$GITHUB_WORKSPACE/tools/build-extras.gradle" platforms/android/app/build-extras.gradle
           else
-            echo "$APP_BUILD_GRADLE not found; skipping compileSdk insertion"
+            APP_BUILD_GRADLE=platforms/android/app/build.gradle
+            if [ -f "$APP_BUILD_GRADLE" ]; then
+              if ! grep -q "compileSdkVersion" "$APP_BUILD_GRADLE"; then
+                echo "Inserting compileSdkVersion 33 into $APP_BUILD_GRADLE"
+                perl -0777 -pe "s/android\s*\{/android {\n        compileSdkVersion 33\n/" -i "$APP_BUILD_GRADLE"
+              else
+                echo "compileSdkVersion already present"
+              fi
+            else
+              echo "$APP_BUILD_GRADLE not found; skipping compileSdk insertion"
+            fi
           fi
 
       - name: Build Android debug APK
