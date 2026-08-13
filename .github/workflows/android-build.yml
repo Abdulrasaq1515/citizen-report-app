@@ -60,8 +60,12 @@ jobs:
       - name: Patch plugin Gradle files and ensure compileSdk
         run: |
           set -e
-          echo "Patching plugin Gradle files: replacing 'compile' with 'implementation'"
-          find platforms/android -type f -name "*.gradle" -print0 | xargs -0 sed -i 's/\bcompile\b/implementation/g' || true
+          echo "Reverting any accidental Pattern.implementation substitutions"
+          find platforms/android -type f -name "*.gradle" -print0 | xargs -0 sed -i 's/Pattern\\.implementation/Pattern.compile/g' || true
+
+          echo "Patching only plugin Gradle files: replacing dependency 'compile' with 'implementation'"
+          # Only modify gradle files inside cordova plugin folders to avoid breaking Cordova scripts
+          find platforms/android -type f -path '*/cordova-plugin-*/*.gradle' -print0 | xargs -0 sed -i 's/\bcompile\b/implementation/g' || true
           # If a committed build-extras exists, copy it into the Android app
           if [ -f "$GITHUB_WORKSPACE/tools/build-extras.gradle" ]; then
             echo "Copying committed tools/build-extras.gradle into platforms/android/app/build-extras.gradle"
